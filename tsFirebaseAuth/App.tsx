@@ -11,7 +11,10 @@ export default function App(): JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen options={{ headerShown: false}} name="Login" component={Login} />
+        <Stack.Screen 
+          options={{ headerShown: false}} 
+          name="Login" component={Login} 
+        />
         <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
     </NavigationContainer>
