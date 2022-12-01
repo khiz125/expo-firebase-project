@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-const appConfig = {
+export default {
   "expo": {
     "name": "tsFirebaseAuth",
     "slug": "tsFirebaseAuth",
@@ -20,13 +20,13 @@ const appConfig = {
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -38,8 +38,6 @@ const appConfig = {
       firebaseStorageBucket: process.env.FIREBASE_STORAGE_BUCKET,
       firebaseMessagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
       firebaseAppId: process.env.FIREBASE_APP_ID
-    }
+    },
   }
 }
-
-export default appConfig;
