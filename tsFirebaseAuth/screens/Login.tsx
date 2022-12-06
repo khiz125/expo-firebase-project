@@ -12,6 +12,7 @@ const Login = (): JSX.Element => {
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [validationMessage, setValidationMessage] = useState<string>('')
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -25,28 +26,33 @@ const Login = (): JSX.Element => {
 
   const handleSignUp = async () => {
     if (email === "" || password === "") {
+      setValidationMessage('Please fill in the blank')
       return;
     };
     try {
       await createUserWithEmailAndPassword(auth, email, password)
-        .then(result => {
-          console.log(result.user.email);
+        .then(userCredential => {
+          console.log(userCredential.user.email);
           navigation.navigate('Home');
         })
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setValidationMessage(error.message);
+      }
     };
   };
 
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password)
-        .then(result => {
-          console.log("Login with: ", result.user.email);
+        .then(userCredential => {
+          console.log("Login with: ", userCredential.user.email);
           navigation.navigate('Home');
         })
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setValidationMessage(error.message);
+      }
     };
   }
 
@@ -56,6 +62,7 @@ const Login = (): JSX.Element => {
       behavior="padding"
     >
       <View style={styles.inputContainer}>
+        {<Text style={styles.error}>{validationMessage}</Text>}
         <TextInput
           placeholder='Email'
           value={email}
@@ -137,5 +144,9 @@ const styles = StyleSheet.create({
     color: '#006400',
     fontWeight: '700',
     fontSize: 16,
+  },
+  error: {
+    marginTop: 10,
+    color: 'red',
   }
 })
