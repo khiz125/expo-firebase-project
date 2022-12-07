@@ -1,42 +1,37 @@
 import { TouchableOpacity, StyleSheet, Text, TextInput, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigation } from "@react-navigation/core";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ParamListBase } from '@react-navigation/native';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 
-const Login = (): JSX.Element => {
+const SignUn = () => {
 
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [validationMessage, setValidationMessage] = useState<string>('');
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) {
-        navigation.replace("Home");
-      };
-    });
-    return unsubscribe;
-  }, []);
-
-
-  const handleLogin = async () => {
+  const handleSignUp = async () => {
+    if (email === "" || password === "" || confirmPassword === "") {
+      setValidationMessage('Please fill in the blank')
+      return;
+    };
     try {
-      await signInWithEmailAndPassword(auth, email, password)
+      await createUserWithEmailAndPassword(auth, email, password)
         .then(userCredential => {
-          console.log("Login with: ", userCredential.user.email);
-          navigation.navigate('Home');
+          console.log(userCredential.user.email);
+          navigation.replace('Home');
         })
     } catch (error) {
       if (error instanceof Error) {
         setValidationMessage(error.message);
       }
     };
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -55,18 +50,19 @@ const Login = (): JSX.Element => {
           style={styles.input}
           secureTextEntry
         />
+        <TextInput
+          placeholder='Confirm password'
+          value={confirmPassword}
+          onChangeText={text => setConfirmPassword(text)}
+          style={styles.input}
+          secureTextEntry
+        />
       </View>
 
       <View style={styles.buttonContainer}>
+        <Text>Create a new account</Text>
         <TouchableOpacity
-          onPress={handleLogin}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <Text>Don't have an account yet?</Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Sign Up')}
+          onPress={handleSignUp}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Sign Up</Text>
@@ -76,7 +72,7 @@ const Login = (): JSX.Element => {
   )
 }
 
-export default Login
+export default SignUn
 
 const styles = StyleSheet.create({
   container: {
@@ -103,16 +99,15 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    backgroundColor: '#32CD32',
+    backgroundColor: '#0782F9',
     width: '100%',
     padding: 10,
     borderRadius: 10,
-    marginBottom: 20
   },
   buttonOutline: {
     backgroundColor: 'white',
-    marginTop: 10,
-    borderColor: '#32CD32',
+    marginTop: 20,
+    borderColor: '#0782F9',
     borderWidth: 1,
   },
   buttonText: {
@@ -121,7 +116,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonOutlineText: {
-    color: '#006400',
+    color: '#0782F9',
     fontWeight: '700',
     fontSize: 16,
   },
