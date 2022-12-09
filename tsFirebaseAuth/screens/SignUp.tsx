@@ -6,7 +6,7 @@ import { ParamListBase } from '@react-navigation/native';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 
-const SignUn = () => {
+const SignUp = () => {
 
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
 
@@ -20,16 +20,31 @@ const SignUn = () => {
       setValidationMessage('Please fill in the blank')
       return;
     };
+    if (password !== confirmPassword) {
+      setValidationMessage("password don't match");
+      return;
+    } else {
+      setValidationMessage("");
+    };
+
     try {
       await createUserWithEmailAndPassword(auth, email, password)
         .then(userCredential => {
           console.log(userCredential.user.email);
-          navigation.replace('Home');
+          navigation.navigate('Login');
         })
     } catch (error) {
       if (error instanceof Error) {
         setValidationMessage(error.message);
       }
+    };
+  };
+
+  const checkPassword = (password: string, confirmPassword: string) => {
+    if (password !== confirmPassword) {
+      setValidationMessage("password don't match");
+    } else {
+      setValidationMessage("");
     };
   };
 
@@ -56,6 +71,7 @@ const SignUn = () => {
           onChangeText={text => setConfirmPassword(text)}
           style={styles.input}
           secureTextEntry
+          onBlur={() => checkPassword(password, confirmPassword)}
         />
       </View>
 
@@ -72,7 +88,7 @@ const SignUn = () => {
   )
 }
 
-export default SignUn
+export default SignUp
 
 const styles = StyleSheet.create({
   container: {
@@ -122,6 +138,7 @@ const styles = StyleSheet.create({
   },
   error: {
     marginTop: 10,
+    textAlign: 'center',
     color: 'red',
   }
 })

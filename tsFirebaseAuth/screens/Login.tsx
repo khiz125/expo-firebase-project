@@ -6,6 +6,7 @@ import { ParamListBase } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 
+
 const Login = (): JSX.Element => {
 
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
@@ -26,11 +27,7 @@ const Login = (): JSX.Element => {
 
   const handleLogin = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
-          console.log("Login with: ", userCredential.user.email);
-          navigation.navigate('Home');
-        })
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       if (error instanceof Error) {
         setValidationMessage(error.message);

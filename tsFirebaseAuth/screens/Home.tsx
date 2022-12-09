@@ -12,7 +12,7 @@ const Home = (): JSX.Element => {
 
   const handleSignOut = async () => {
     try {
-      signOut(auth)
+      await signOut(auth)
         .then(() => {
           navigation.replace('Login')
         })
@@ -26,6 +26,7 @@ const Home = (): JSX.Element => {
   return (
     <View style={styles.container}>
       <Text>Home</Text>
+      <Text>Wellcome {auth.currentUser?.email}!</Text>
       <TouchableOpacity
         onPress={handleSignOut}
         style={[styles.button, styles.buttonOutline]}
