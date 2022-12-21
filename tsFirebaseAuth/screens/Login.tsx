@@ -25,9 +25,9 @@ const Login = (): JSX.Element => {
   }, []);
 
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       if (error instanceof Error) {
         setValidationMessage(error.message);

@@ -17,7 +17,7 @@ const SignUp = () => {
 
   const handleSignUp = async () => {
     if (email === "" || password === "" || confirmPassword === "") {
-      setValidationMessage('Please fill in the blank')
+      setValidationMessage('Please fill in the blank');
       return;
     };
     if (password !== confirmPassword) {
