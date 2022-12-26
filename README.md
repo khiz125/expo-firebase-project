@@ -1,4 +1,4 @@
-# React Native Authentication with Firebase and Expo
+# Expo (React Native) Firebase v9 Authentication with dotenv 
 
 ## Tools
 
